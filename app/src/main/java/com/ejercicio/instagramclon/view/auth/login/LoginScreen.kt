@@ -18,25 +18,26 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ejercicio.instagramclon.R
 
 @Preview
 @Composable
-fun LoginScreen() {
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+fun LoginScreen( loginViewModel: LoginViewModel = viewModel()) {
+
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+    val email = uiState.email
+    val password = uiState.password
+
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier
@@ -60,7 +61,7 @@ fun LoginScreen() {
 
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { loginViewModel.onEmailChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(25),
                 label = { Text("Usuario, correo electrónico o móvil") }
@@ -70,7 +71,7 @@ fun LoginScreen() {
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { loginViewModel.onPasswordChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(25),
                 label = { Text("Contraseña") }
