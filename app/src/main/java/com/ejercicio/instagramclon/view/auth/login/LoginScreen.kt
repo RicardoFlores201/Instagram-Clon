@@ -82,7 +82,8 @@ fun LoginScreen( loginViewModel: LoginViewModel = viewModel()) {
             Button(
                 onClick = {},
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+                //enabled = uiState.isLoginEnabled
             ) {
                 Text("Iniciar sesión", modifier = Modifier.padding(vertical = 4.dp))
             }

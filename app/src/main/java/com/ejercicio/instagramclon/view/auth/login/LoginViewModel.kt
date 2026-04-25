@@ -1,5 +1,6 @@
 package com.ejercicio.instagramclon.view.auth.login
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,11 +12,26 @@ class LoginViewModel: ViewModel(){
 
     fun onEmailChanged(email: String){
         _uiState.update { state -> state.copy(email = email) }
+        validateLogin()
     }
 
     fun onPasswordChanged(password: String){
         _uiState.update { state -> state.copy(password = password) }
+        validateLogin()
     }
+
+    fun validateLogin(){
+        val enabledLogin =
+            isEmailValid(_uiState.value.email) && isPasswordValid(_uiState.value.password)
+        _uiState.update {
+            it.copy(isLoginEnabled = enabledLogin)
+        }
+    }
+
+    fun isEmailValid(email: String): Boolean =
+        Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    fun isPasswordValid(password: String): Boolean = password.length >= 6
 
 }
 
